@@ -39,7 +39,7 @@
 
 set_global_assignment -name FAMILY "Cyclone IV E"
 set_global_assignment -name DEVICE EP4CE115F29C7
-set_global_assignment -name TOP_LEVEL_ENTITY SimpleALU
+set_global_assignment -name TOP_LEVEL_ENTITY add_circuit
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 17.0.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "14:20:35  SEPTEMBER 13, 2022"
 set_global_assignment -name LAST_QUARTUS_VERSION "17.0.0 Lite Edition"
@@ -53,3 +53,36 @@ set_global_assignment -name NOMINAL_CORE_SUPPLY_VOLTAGE 1.2V
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
 set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name VERILOG_FILE add_circuit.v
+set_global_assignment -name VERILOG_FILE full_adder.v
+set_global_assignment -name VERILOG_FILE RCA_4bit.v
+set_global_assignment -name VERILOG_FILE mux2to1_4bit.v
+set_global_assignment -name VERILOG_FILE testbenches/mux2to1_4bit_tb.v
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH add_circuit_tb -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_NAME mux2to1_4bit_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id mux2to1_4bit_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME mux2to1_4bit_tb -section_id mux2to1_4bit_tb
+set_global_assignment -name VERILOG_FILE RCA_8bit.v
+set_global_assignment -name VERILOG_FILE mux2to1_1bit.v
+set_global_assignment -name VERILOG_FILE testbenches/RCA_8bit_tb.v
+set_global_assignment -name EDA_TEST_BENCH_NAME RCA_8bit_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id RCA_8bit_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME RCA_8bit_tb -section_id RCA_8bit_tb
+set_global_assignment -name VERILOG_FILE RCA_16bit.v
+set_global_assignment -name VERILOG_FILE mux2to1_8bit.v
+set_global_assignment -name VERILOG_FILE RCA_32bit.v
+set_global_assignment -name VERILOG_FILE mux2to1_16bit.v
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name VERILOG_FILE testbenches/add_circuit_tb.v
+set_global_assignment -name EDA_TEST_BENCH_FILE testbenches/mux2to1_4bit_tb.v -section_id mux2to1_4bit_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE testbenches/RCA_8bit_tb.v -section_id RCA_8bit_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME add_circuit_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id add_circuit_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME add_circuit_tb -section_id add_circuit_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE testbenches/add_circuit_tb.v -section_id add_circuit_tb
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
