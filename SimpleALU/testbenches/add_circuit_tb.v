@@ -8,7 +8,7 @@ module add_circuit_tb();
     integer errors;
     integer index;    // for testing...
     
-    add_circuit ac_ut(data_result, data_operandA, data_operandB);
+    add_circuit ac_ut(data_result, data_operandA, data_operandB, 1'b0);
 
     initial begin
         $display($time, " << Starting the Simulation >>");

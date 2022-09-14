@@ -23,9 +23,7 @@ module alu_tb();
     alu alu_ut(data_operandA, data_operandB, ctrl_ALUopcode, ctrl_shiftamt,
         data_result, isNotEqual, isLessThan, overflow);
 
-    initial
-
-    begin
+    initial begin
         $display($time, " << Starting the Simulation >>");
         clock = 1'b0;    // at time 0
         errors = 0;
