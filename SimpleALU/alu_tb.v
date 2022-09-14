@@ -17,6 +17,7 @@ module alu_tb();
     // Tracking the number of errors
     integer errors;
     integer index;    // for testing...
+    integer successes;
 
 
     // Instantiate ALU
@@ -27,6 +28,7 @@ module alu_tb();
         $display($time, " << Starting the Simulation >>");
         clock = 1'b0;    // at time 0
         errors = 0;
+        successes = 0;
 
         //checkOr();
         //checkAnd();
@@ -41,6 +43,7 @@ module alu_tb();
 
         if(errors == 0) begin
             $display("The simulation completed without errors");
+            $display("Simulation passed all %d tests", successes);
         end
         else begin
             $display("The simulation failed with %d errors", errors);
@@ -66,6 +69,8 @@ module alu_tb();
             if(data_result !== 32'h00000000) begin
                 $display("**Error in OR (test 1); expected: %h, actual: %h", 32'h00000000, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
 
             @(negedge clock);
@@ -76,7 +81,10 @@ module alu_tb();
             if(data_result !== 32'hFFFFFFFF) begin
                 $display("**Error in OR (test 2); expected: %h, actual: %h", 32'hFFFFFFFF, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             @(negedge clock);
             assign data_operandA = 32'h00000000;
@@ -86,7 +94,10 @@ module alu_tb();
             if(data_result !== 32'hFFFFFFFF) begin
                 $display("**Error in OR (test 3); expected: %h, actual: %h", 32'hFFFFFFFF, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             @(negedge clock);
             assign data_operandA = 32'hFFFFFFFF;
@@ -96,7 +107,10 @@ module alu_tb();
             if(data_result !== 32'hFFFFFFFF) begin
                 $display("**Error in OR (test 4); expected: %h, actual: %h", 32'hFFFFFFFF, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
         end
     endtask
 
@@ -113,7 +127,10 @@ module alu_tb();
             if(data_result !== 32'h00000000) begin
                 $display("**Error in AND (test 5); expected: %h, actual: %h", 32'h00000000, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             @(negedge clock);
             assign data_operandA = 32'hFFFFFFFF;
@@ -123,7 +140,10 @@ module alu_tb();
             if(data_result !== 32'h00000000) begin
                 $display("**Error in AND (test 6); expected: %h, actual: %h", 32'h00000000, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             @(negedge clock);
             assign data_operandA = 32'h00000000;
@@ -133,7 +153,10 @@ module alu_tb();
             if(data_result !== 32'h00000000) begin
                 $display("**Error in AND (test 7); expected: %h, actual: %h", 32'h00000000, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             @(negedge clock);
             assign data_operandA = 32'hFFFFFFFF;
@@ -143,7 +166,10 @@ module alu_tb();
             if(data_result !== 32'hFFFFFFFF) begin
                 $display("**Error in AND (test 8); expected: %h, actual: %h", 32'hFFFFFFFF, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
         end
     endtask
 
@@ -160,7 +186,10 @@ module alu_tb();
             if(data_result !== 32'h00000000) begin
                 $display("**Error in ADD (test 9); expected: %h, actual: %h", 32'h00000000, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             for(index = 0; index < 31; index = index + 1)
             begin
@@ -174,7 +203,10 @@ module alu_tb();
                 if(data_result !== data_expected) begin
                     $display("**Error in ADD (test 17 part %d); expected: %h, actual: %h", index, data_expected, data_result);
                     errors = errors + 1;
+                end else begin
+                  successes = successes + 1;
                 end
+
             end
         end
     endtask
@@ -192,7 +224,10 @@ module alu_tb();
             if(data_result !== 32'h00000000) begin
                 $display("**Error in SUB (test 10); expected: %h, actual: %h", 32'h00000000, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
         end
     endtask
 
@@ -209,7 +244,10 @@ module alu_tb();
             if(data_result !== 32'h00000001) begin
                 $display("**Error in SLL (test 11); expected: %h, actual: %h", 32'h00000001, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             for(index = 0; index < 5; index = index + 1)
             begin
@@ -223,7 +261,10 @@ module alu_tb();
                 if(data_result !== data_expected) begin
                     $display("**Error in SLL (test 18 part %d); expected: %h, actual: %h", index, data_expected, data_result);
                     errors = errors + 1;
-                end
+                end else begin
+                successes = successes + 1;
+            end
+
             end
 
             for(index = 0; index < 4; index = index + 1)
@@ -238,7 +279,10 @@ module alu_tb();
                 if(data_result !== data_expected) begin
                     $display("**Error in SLL (test 19 part %d); expected: %h, actual: %h", index, data_expected, data_result);
                     errors = errors + 1;
-                end
+                end else begin
+                successes = successes + 1;
+            end
+
             end
         end
     endtask
@@ -256,7 +300,10 @@ module alu_tb();
             if(data_result !== 32'h00000000) begin
                 $display("**Error in SRA (test 12); expected: %h, actual: %h", 32'h00000000, data_result);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
         end
     endtask
 
@@ -273,7 +320,10 @@ module alu_tb();
             if(isNotEqual !== 1'b0) begin
                 $display("**Error in isNotEqual (test 13); expected: %b, actual: %b", 1'b0, isNotEqual);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
         end
     endtask
 
@@ -290,7 +340,10 @@ module alu_tb();
             if(isLessThan !== 1'b0) begin
                 $display("**Error in isLessThan (test 14); expected: %b, actual: %b", 1'b0, isLessThan);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             @(negedge clock);
             assign data_operandA = 32'h0FFFFFFF;
@@ -300,7 +353,10 @@ module alu_tb();
             if(isLessThan !== 1'b0) begin
                 $display("**Error in isLessThan (test 23); expected: %b, actual: %b", 1'b0, isLessThan);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             // Less than with overflow
             @(negedge clock);
@@ -311,7 +367,10 @@ module alu_tb();
             if(isLessThan !== 1'b1) begin
                 $display("**Error in isLessThan (test 24); expected: %b, actual: %b", 1'b1, isLessThan);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
         end
     endtask
 
@@ -328,7 +387,10 @@ module alu_tb();
             if(overflow !== 1'b0) begin
                 $display("**Error in overflow (test 15); expected: %b, actual: %b", 1'b0, overflow);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             @(negedge clock);
             assign data_operandA = 32'h80000000;
@@ -338,7 +400,10 @@ module alu_tb();
             if(overflow !== 1'b1) begin
                 $display("**Error in overflow (test 20); expected: %b, actual: %b", 1'b1, overflow);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             @(negedge clock);
             assign data_operandA = 32'h40000000;
@@ -348,7 +413,10 @@ module alu_tb();
             if(overflow !== 1'b1) begin
                 $display("**Error in overflow (test 21); expected: %b, actual: %b", 1'b1, overflow);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             @(negedge clock);
             assign ctrl_ALUopcode = 5'b00001;
@@ -360,7 +428,10 @@ module alu_tb();
             if(overflow !== 1'b0) begin
                 $display("**Error in overflow (test 16); expected: %b, actual: %b", 1'b0, overflow);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             @(negedge clock);
             assign data_operandA = 32'h80000000;
@@ -370,7 +441,10 @@ module alu_tb();
             if(overflow !== 1'b0) begin
                 $display("**Error in overflow (test 22); expected: %b, actual: %b", 1'b0, overflow);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
 
             @(negedge clock);
             assign data_operandA = 32'h80000000;
@@ -380,7 +454,10 @@ module alu_tb();
             if(overflow !== 1'b1) begin
                 $display("**Error in overflow (test 25); expected: %b, actual: %b", 1'b1, overflow);
                 errors = errors + 1;
+            end else begin
+                successes = successes + 1;
             end
+
         end
     endtask
 
