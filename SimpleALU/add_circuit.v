@@ -13,8 +13,6 @@ module add_circuit(result, overflow, data_A, data_B, cin);
   RCA_32bit add32bit(data_A, data_B_new, cin, cout, result);
 
   // determine overflow
-  xor xor_A_B(A_B_xor, data_A[31], data_B_new[31]);
-  xor xor_cout_sum(cout_sum_xor, result[31], cout);
-  xor xor_overflow(overflow, A_B_xor, cout_sum_xor);
+  xor_1bit_4in xor_4in(data_A[31], data_B_new[31], result[31], cout, overflow);
 
 endmodule
