@@ -228,6 +228,20 @@ module alu_tb();
                 successes = successes + 1;
             end
 
+            @(negedge clock);
+            assign ctrl_ALUopcode = 5'b00001;
+            assign ctrl_shiftamt = 5'b00000;
+
+            assign data_operandA = 32'h80000000;
+            assign data_operandB = 32'h00000001;
+
+            @(negedge clock);
+            if(data_result !== 32'h7FFFFFFF) begin
+                $display("**Error in SUB (test 10); expected: %h, actual: %h", 32'h7FFFFFFF, data_result);
+                errors = errors + 1;
+            end else begin
+                successes = successes + 1;
+            end
         end
     endtask
 
@@ -449,6 +463,18 @@ module alu_tb();
             @(negedge clock);
             assign data_operandA = 32'h80000000;
             assign data_operandB = 32'h0F000000;
+
+            @(negedge clock);
+            if(overflow !== 1'b1) begin
+                $display("**Error in overflow (test 25); expected: %b, actual: %b", 1'b1, overflow);
+                errors = errors + 1;
+            end else begin
+                successes = successes + 1;
+            end
+
+            @(negedge clock);
+            assign data_operandA = 32'h80000000;
+            assign data_operandB = 32'h00000001;
 
             @(negedge clock);
             if(overflow !== 1'b1) begin
