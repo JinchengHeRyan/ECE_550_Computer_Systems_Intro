@@ -4,11 +4,12 @@ module add_circuit_tb();
     reg [31:0] data_operandA, data_operandB, data_expected;
 
     wire [31:0] data_result;
+    wire overflow;
 
     integer errors;
     integer index;    // for testing...
     
-    add_circuit ac_ut(data_result, data_operandA, data_operandB, 1'b0);
+    add_circuit ac_ut(data_result, overflow, data_operandA, data_operandB, 1'b0);
 
     initial begin
         $display($time, " << Starting the Simulation >>");
