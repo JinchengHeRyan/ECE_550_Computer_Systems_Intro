@@ -1,5 +1,5 @@
 `timescale 1 ns / 100ps
-module RCA_8bit_tb();
+module CSA_8bit_tb();
   reg [7:0] in0;
   reg [7:0] in1;
   reg cin;
@@ -8,7 +8,7 @@ module RCA_8bit_tb();
   wire [7:0] sum;
   wire out;
 
-  RCA_8bit test_RCA(in0, in1, cin, out, sum);
+  CSA_8bit test_CSA(in0, in1, cin, out, sum);
 
   initial begin
     $display("simulation start");

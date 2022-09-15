@@ -54,7 +54,7 @@ set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
 set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
 set_global_assignment -name VERILOG_FILE add_circuit.v
-set_global_assignment -name VERILOG_FILE full_adder.v
+set_global_assignment -name VERILOG_FILE RCAs/full_adder.v
 set_global_assignment -name VERILOG_FILE RCAs/RCA_4bit.v
 set_global_assignment -name VERILOG_FILE MUXs/mux2to1_4bit.v
 set_global_assignment -name VERILOG_FILE testbenches/mux2to1_4bit_tb.v
@@ -65,15 +65,15 @@ set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH alu_tb -section
 set_global_assignment -name EDA_TEST_BENCH_NAME mux2to1_4bit_tb -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id mux2to1_4bit_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME mux2to1_4bit_tb -section_id mux2to1_4bit_tb
-set_global_assignment -name VERILOG_FILE RCAs/RCA_8bit.v
+set_global_assignment -name VERILOG_FILE RCAs/CSA_8bit.v
 set_global_assignment -name VERILOG_FILE MUXs/mux2to1_1bit.v
-set_global_assignment -name VERILOG_FILE testbenches/RCA_8bit_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME RCA_8bit_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id RCA_8bit_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME RCA_8bit_tb -section_id RCA_8bit_tb
-set_global_assignment -name VERILOG_FILE RCAs/RCA_16bit.v
+set_global_assignment -name VERILOG_FILE testbenches/CSA_8bit_tb.v
+set_global_assignment -name EDA_TEST_BENCH_NAME CSA_8bit_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id CSA_8bit_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME CSA_8bit_tb -section_id CSA_8bit_tb
+set_global_assignment -name VERILOG_FILE RCAs/CSA_16bit.v
 set_global_assignment -name VERILOG_FILE MUXs/mux2to1_8bit.v
-set_global_assignment -name VERILOG_FILE RCAs/RCA_32bit.v
+set_global_assignment -name VERILOG_FILE RCAs/CSA_32bit.v
 set_global_assignment -name VERILOG_FILE MUXs/mux2to1_16bit.v
 set_global_assignment -name VERILOG_FILE testbenches/add_circuit_tb.v
 set_global_assignment -name EDA_TEST_BENCH_NAME add_circuit_tb -section_id eda_simulation
@@ -88,10 +88,12 @@ set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name EDA_TEST_BENCH_FILE testbenches/mux2to1_4bit_tb.v -section_id mux2to1_4bit_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE testbenches/RCA_8bit_tb.v -section_id RCA_8bit_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE testbenches/CSA_8bit_tb.v -section_id CSA_8bit_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE testbenches/add_circuit_tb.v -section_id add_circuit_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE alu_tb.v -section_id alu_tb
 
 set_global_assignment -name VERILOG_FILE XORs/xor_1bit_4in.v
+
+
 
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -1,4 +1,4 @@
-module RCA_8bit(in1, in2, cin, cout, sum);
+module CSA_8bit(in1, in2, cin, cout, sum);
 	input cin;
 	input [7:0]in1, in2;
 	output [7:0] sum;
