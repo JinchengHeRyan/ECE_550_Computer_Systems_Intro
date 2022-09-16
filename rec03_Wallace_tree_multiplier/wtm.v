@@ -92,9 +92,9 @@ module wtm(a, b, result, cout);
 
   half_adder ha_00(result[1], c1, a1b0, a0b1);
   full_adder fa_00(s2, c2, a2b0, a1b1, a0b2);
-  full_adder fa_01(s3, c3, a3b0, a2b2, a1b2);
-  full_adder fa_02(s4, c4, a4b0, a3b2, a2b2);
-  full_adder fa_03(s5, c5, a4b2, a3b2, a2b3);
+  full_adder fa_01(s3, c3, a3b0, a2b1, a1b2);
+  full_adder fa_02(s4, c4, a4b0, a3b1, a2b2);
+  full_adder fa_03(s5, c5, a4b1, a3b2, a2b3);
   full_adder fa_04(s6, c6, a4b2, a3b3, a2b4);
   half_adder ha_01(s7, c7, a4b3, a3b4);
 
