@@ -1,4 +1,5 @@
 `timescale 1 ns / 100 ps
+
 module wtm_tb();
   reg [4:0] in1;
   reg [4:0] in2;
@@ -44,10 +45,6 @@ module wtm_tb();
       successes = successes + 1;
     end
 
-    @(negedge clock);
-    if (errors == 0) begin
-      $display("passed all %d tests!", successes);
-    end
 
     $stop;
   end
