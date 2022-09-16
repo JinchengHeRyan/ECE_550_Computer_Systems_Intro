@@ -1,4 +1,4 @@
-module WTM(a, b, result, cout);
+module wtm(a, b, result, cout);
 
   // ==========
   // init setting

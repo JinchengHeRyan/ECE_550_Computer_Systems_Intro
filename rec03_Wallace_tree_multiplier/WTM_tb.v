@@ -1,5 +1,5 @@
 `timescale 1 ns / 100 ps
-module WTM_tb();
+module wtm_tb();
   reg [4:0] in1;
   reg [4:0] in2;
 
@@ -11,7 +11,7 @@ module WTM_tb();
   integer errors;
   integer successes;
 
-  WTM test_WTM(in1, in2, result, cout);
+  wtm test_wtm(in1, in2, result, cout);
 
   initial begin
     $display($time, " << Starting the Simulation >>");
@@ -21,8 +21,8 @@ module WTM_tb();
     successes = 0;
 
     @(negedge clock);
-    in1 = 5'b10010;
-    in2 = 5'b00010;
+    assign in1 = 5'b10010;
+    assign in2 = 5'b00010;
 
     @(negedge clock);
     if (result != 10'b0000100100 || cout != 1'b0) begin
@@ -33,8 +33,8 @@ module WTM_tb();
     end
 
     @(negedge clock);
-    in1 = 5'b10010;
-    in2 = 5'b00011;
+    assign in1 = 5'b10010;
+    assign in2 = 5'b00011;
 
     @(negedge clock);
     if (result != 10'b0000110110 || cout != 1'b0) begin
