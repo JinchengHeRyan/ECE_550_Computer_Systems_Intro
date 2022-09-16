@@ -59,6 +59,7 @@ module wtm_tb();
       successes = successes + 1;
     end
 
+
     @(negedge clock);
     assign in1 = 5'd31;
     assign in2 = 5'd1;
@@ -66,6 +67,32 @@ module wtm_tb();
     @(negedge clock);
     if (result != 10'd31 || cout != 1'b0) begin
       $display("test 4 failed; expected: %h, actual: %h", 10'd31, result);
+      errors = errors + 1;
+    end else begin
+      successes = successes + 1;
+    end
+
+
+    @(negedge clock);
+    assign in1 = 5'd31;
+    assign in2 = 5'd3;
+
+    @(negedge clock);
+    if (result != 10'd93 || cout != 1'b0) begin
+      $display("test 5 failed; expected: %b, actual: %b", 10'd93, result);
+      errors = errors + 1;
+    end else begin
+      successes = successes + 1;
+    end
+
+
+    @(negedge clock);
+    assign in1 = 5'd29;
+    assign in2 = 5'd7;
+
+    @(negedge clock);
+    if (result != 10'd203 || cout != 1'b0) begin
+      $display("test 6 failed; expected: %b, actual: %b", 10'd203, result);
       errors = errors + 1;
     end else begin
       successes = successes + 1;
