@@ -32,14 +32,14 @@ module alu_tb();
 
         //checkOr();
         //checkAnd();
-        checkAdd();
+        // checkAdd();
         checkSub();
         //checkSLL();
         //checkSRA();
 
         //checkNE();
         //checkLT();
-        checkOverflow();
+        // checkOverflow();
 
         if(errors == 0) begin
             $display("The simulation completed without errors");
@@ -208,6 +208,24 @@ module alu_tb();
                 end
 
             end
+            
+          for (index = 0; index < 100; index = index + 1)
+          begin
+              @(negedge clock)
+              assign data_operandA = $urandom (index);
+              assign data_operandB = $urandom (index + 10);
+              assign data_expected = data_operandA + data_operandB;
+
+              @(negedge clock);
+              if(data_result !== data_expected) begin
+                  $display("random A = %h", data_operandA);
+                  $display("random B = %h", data_operandB);
+                  $display("**Addition random test (part %d); expected: %h, actual: %h", index, data_expected, data_result);
+                  errors = errors + 1;
+              end else begin
+                successes = successes + 1;
+              end
+          end
         end
     endtask
 
@@ -241,6 +259,24 @@ module alu_tb();
                 errors = errors + 1;
             end else begin
                 successes = successes + 1;
+            end
+
+            for (index = 0; index < 100; index = index + 1)
+            begin
+                @(negedge clock)
+                assign data_operandA = $urandom (index);
+                assign data_operandB = $urandom (index + 10);
+                assign data_expected = data_operandA - data_operandB;
+
+                @(negedge clock);
+                if(data_result !== data_expected) begin
+                    $display("random A = %h", data_operandA);
+                    $display("random B = %h", data_operandB);
+                    $display("**Sub random test (part %d); expected: %h, actual: %h", index, data_expected, data_result);
+                    errors = errors + 1;
+                end else begin
+                  successes = successes + 1;
+                end
             end
         end
     endtask
