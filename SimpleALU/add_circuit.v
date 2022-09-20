@@ -8,6 +8,8 @@ module add_circuit(result, overflow, data_A, data_B, cin);
 
   wire [31:0] data_B_new;
 
+  wire cout;
+
   xor_32bit xor_gate(data_B, cin, data_B_new);
 
   CSA_32bit add32bit(data_A, data_B_new, cin, cout, result);
