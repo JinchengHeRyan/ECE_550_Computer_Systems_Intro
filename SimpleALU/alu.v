@@ -10,6 +10,7 @@ module alu(data_operandA, data_operandB, ctrl_ALUopcode, ctrl_shiftamt, data_res
    
    wire [31:0] add_sub_output;
    wire [31:0] and_output;
+   wire [31:0] or_output;
    wire add_circuit_cout;
    wire A_B_xor;
 
@@ -18,9 +19,11 @@ module alu(data_operandA, data_operandB, ctrl_ALUopcode, ctrl_shiftamt, data_res
    
    add_circuit add_c(add_sub_output, overflow, data_operandA, data_operandB, add_or_sub);
 
+   // and or result
    and_circuit and_c(and_output, data_operandA, data_operandB);
+   or_circuit  or_c(or_output, data_operandA, data_operandB);
 
-   chooseOp choose_op(add_sub_output, add_sub_output, and_output, ctrl_ALUopcode, data_result);
+   chooseOp choose_op(add_sub_output, add_sub_output, and_output, or_output, ctrl_ALUopcode, data_result);
 
    
 endmodule

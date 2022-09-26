@@ -30,7 +30,7 @@ module alu_tb();
         errors = 0;
         successes = 0;
 
-        //checkOr();
+        checkOr();
         checkAnd();
         checkAdd();
         checkSub();
