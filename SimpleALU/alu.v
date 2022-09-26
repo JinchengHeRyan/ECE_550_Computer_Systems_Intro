@@ -19,7 +19,7 @@ module alu(data_operandA, data_operandB, ctrl_ALUopcode, ctrl_shiftamt, data_res
    wire add_or_sub;  // controled by Opcode
    assign add_or_sub = ctrl_ALUopcode[0] ? 1'b1 : 1'b0;
 
-   add_circuit add_c(add_sub_output, overflow, isNotEqual, data_operandA, data_operandB, add_or_sub);
+   add_circuit add_c(add_sub_output, overflow, isNotEqual, isLessThan, data_operandA, data_operandB, add_or_sub);
 
    // and or result
    and_circuit and_c(and_output, data_operandA, data_operandB);
