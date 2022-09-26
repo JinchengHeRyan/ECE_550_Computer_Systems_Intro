@@ -34,7 +34,7 @@ module alu_tb();
         checkAnd();
         checkAdd();
         checkSub();
-        //checkSLL();
+        checkSLL();
         //checkSRA();
 
         //checkNE();
@@ -331,8 +331,26 @@ module alu_tb();
                     errors = errors + 1;
                 end else begin
                 successes = successes + 1;
+                end
+
             end
 
+            for (index = 0; index < 100; index = index + 1)
+            begin
+                @(negedge clock)
+                assign data_operandA = $urandom (index);
+                assign ctrl_shiftamt = $urandom (index + 10);
+                assign data_expected = data_operandA << ctrl_shiftamt;
+
+                @(negedge clock);
+                if(data_result !== data_expected) begin
+                    $display("random A = %h", data_operandA);
+                    $display("random B = %h", data_operandB);
+                    $display("**Addition random test (part %d); expected: %h, actual: %h", index, data_expected, data_result);
+                    errors = errors + 1;
+                end else begin
+                  successes = successes + 1;
+                end
             end
         end
     endtask
