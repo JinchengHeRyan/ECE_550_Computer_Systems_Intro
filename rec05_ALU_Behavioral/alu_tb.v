@@ -30,16 +30,16 @@ module alu_tb();
         errors = 0;
         successes = 0;
 
-        // checkOr();
-        // checkAnd();
+        checkOr();
+        checkAnd();
         checkAdd();
-        // checkSub();
-        // checkSLL();
-        // checkSRA();
+        checkSub();
+        checkSLL();
+        checkSRA();
 
-        // checkNE();
-        // checkLT();
-        // checkOverflow();
+        checkNE();
+        checkLT();
+        checkOverflow();
 
         if(errors == 0) begin
             $display("The simulation completed without errors");

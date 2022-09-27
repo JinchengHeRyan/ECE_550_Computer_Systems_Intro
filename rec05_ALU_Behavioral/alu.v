@@ -6,7 +6,7 @@ module alu(data_operandA, data_operandB, ctrl_ALUopcode, ctrl_shiftamt, data_res
    output reg isNotEqual, isLessThan, overflow;
 
    // IMPLEMENTATION HERE
-   
+
    localparam 
         ADD        = 5'b00000, 
         SUBTRACT   = 5'b00001,
@@ -16,14 +16,34 @@ module alu(data_operandA, data_operandB, ctrl_ALUopcode, ctrl_shiftamt, data_res
         SRA        = 5'b00101;
     
    always @(data_operandA or data_operandB or ctrl_ALUopcode or ctrl_shiftamt) begin
+
      case(ctrl_ALUopcode)
        ADD: 
-         data_result <= data_operandA + data_operandB;
-
+         begin
+           data_result = data_operandA + data_operandB;
+           overflow = (!data_operandA[31] & !data_operandB[31] & data_result[31]) |
+                      (data_operandA[31] & data_operandB[31] & !data_result[31]);
+         end
+       SUBTRACT: 
+         begin
+           data_result = data_operandA - data_operandB;
+           overflow = (data_operandA[31] & !data_operandB[31] & !data_result[31]) |
+                      (!data_operandA[31] & data_operandB[31] & data_result[31]);
+         end
+       AND: 
+         data_result = data_operandA & data_operandB;
+       OR: 
+         data_result = data_operandA | data_operandB;
+       SLL: 
+         data_result = data_operandA << ctrl_shiftamt;
+       SRA: 
+         data_result = data_operandA >> ctrl_shiftamt;
      endcase
 
+     isNotEqual <= (data_operandA != data_operandB) ? 1'b1 : 1'b0;
+     isLessThan <= (data_operandA[31] & !data_operandB[31]) | 
+                  ((data_operandA[31] ~^ data_operandB[31]) & data_result[31]);
 
    end
-
 
 endmodule
