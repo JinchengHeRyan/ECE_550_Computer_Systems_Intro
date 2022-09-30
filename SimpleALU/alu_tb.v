@@ -377,7 +377,7 @@ module alu_tb();
                 @(negedge clock)
                 assign data_operandA = $urandom (index);
                 assign ctrl_shiftamt = $urandom (index + 10);
-                assign data_expected = data_operandA >> ctrl_shiftamt;
+                assign data_expected = $signed(data_operandA) >>> ctrl_shiftamt;
 
                 @(negedge clock);
                 if(data_result !== data_expected) begin
