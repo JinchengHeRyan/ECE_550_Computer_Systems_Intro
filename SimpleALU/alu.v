@@ -26,8 +26,8 @@ module alu(data_operandA, data_operandB, ctrl_ALUopcode, ctrl_shiftamt, data_res
    or_circuit  or_c(or_output, data_operandA, data_operandB);
 
    // left and right shift
-   left_shifter ls_c(leftshift_output, data_operandA, ctrl_shiftamt);
-   right_shifter rs_c(rightshift_output, data_operandA, ctrl_shiftamt);
+   left_shifter ls_c(leftshift_output, data_operandA, ctrl_shiftamt, 1'b0);
+   right_shifter rs_c(rightshift_output, data_operandA, ctrl_shiftamt, data_operandA[31]);
 
    chooseOp choose_op(add_sub_output,
                       add_sub_output,

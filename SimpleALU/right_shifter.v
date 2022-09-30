@@ -1,6 +1,7 @@
-module right_shifter(result, data, shiftamt);
+module right_shifter(result, data, shiftamt, shift_in);
   input [31:0] data;
   input [4:0] shiftamt;
+  input shift_in;
 
   output [31:0] result;
 
@@ -15,7 +16,7 @@ module right_shifter(result, data, shiftamt);
     end
   endgenerate
 
-  left_shifter ls(temp_result, reverse, shiftamt);
+  left_shifter ls(temp_result, reverse, shiftamt, shift_in);
 
   generate
     for (i = 0; i < 32; i = i + 1) begin: reverse_back
