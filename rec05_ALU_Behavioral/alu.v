@@ -37,7 +37,7 @@ module alu(data_operandA, data_operandB, ctrl_ALUopcode, ctrl_shiftamt, data_res
        SLL: 
          data_result = data_operandA << ctrl_shiftamt;
        SRA: 
-         data_result = data_operandA >> ctrl_shiftamt;
+         data_result = $signed(data_operandA) >>> ctrl_shiftamt;
      endcase
 
      isNotEqual <= (data_operandA != data_operandB) ? 1'b1 : 1'b0;
