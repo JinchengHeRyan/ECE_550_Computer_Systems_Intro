@@ -11,6 +11,7 @@ module regfile_tb();
 
     // Tracking the number of errors
     integer errors;
+    integer successes;
     integer index;    // for testing...
 
     // instantiate the DUT
@@ -23,6 +24,7 @@ module regfile_tb();
         $display($time, " << Starting the Simulation >>");
         clock = 1'b0;    // at time 0
         errors = 0;
+        successes = 0;
 
         ctrl_reset = 1'b1;    // assert reset
         @(negedge clock);    // wait until next negative edge of clock
@@ -32,13 +34,16 @@ module regfile_tb();
         @(negedge clock);    // wait until next negative edge of clock
 
         // Begin testing... (loop over registers)
-        for(index = 0; index <= 31; index = index + 1) begin
-            writeRegister(index, 32'h0000DEAD);
-            checkRegister(index, 32'h0000DEAD);
+        for(index = 0; index <= 100; index = index + 1) begin
+            writeRegister($urandom (index), $urandom (index + 5));
+            checkRegister($urandom (index), $urandom (index + 5));
         end
+        
+        checkReset();
 
         if (errors == 0) begin
             $display("The simulation completed without errors");
+            $display("Passed all %d tests!", successes);
         end
         else begin
             $display("The simulation failed with %d errors", errors);
@@ -86,15 +91,62 @@ module regfile_tb();
 
             @(negedge clock); // wait for next negedge, read should be done
 
-            if(data_readRegA !== exp) begin
-                $display("**Error on port A: read %h but expected %h.", data_readRegA, exp);
-                errors = errors + 1;
-            end
+            if (checkReg == 5'b00000) begin
+              if(data_readRegA !== 32'h00000000) begin
+                  $display("**Error on port A: read %h but expected %h.", data_readRegA, exp);
+                  errors = errors + 1;
+              end else begin
+                  successes = successes + 1;
+              end
 
-            if(data_readRegB !== exp) begin
-                $display("**Error on port B: read %h but expected %h.", data_readRegB, exp);
-                errors = errors + 1;
+              if(data_readRegB !== 32'h00000000) begin
+                  $display("**Error on port B: read %h but expected %h.", data_readRegB, exp);
+                  errors = errors + 1;
+              end else begin
+                  successes = successes + 1;
+              end
+
+            end else begin
+
+              if(data_readRegA !== exp) begin
+                  $display("**Error on port A: read %h but expected %h.", data_readRegA, exp);
+                  errors = errors + 1;
+              end else begin
+                  successes = successes + 1;
+              end
+
+              if(data_readRegB !== exp) begin
+                  $display("**Error on port B: read %h but expected %h.", data_readRegB, exp);
+                  errors = errors + 1;
+              end else begin
+                  successes = successes + 1;
+              end
+
             end
         end
     endtask
+
+
+    task checkReset;
+
+        begin
+            @(negedge clock);    // wait for next negedge of clock
+            $display("Begin resetting");
+
+            ctrl_reset = 1'b1;    // assert reset
+            @(negedge clock);    // wait until next negative edge of clock
+            @(negedge clock);    // wait until next negative edge of clock
+
+            ctrl_reset = 1'b0;    // de-assert reset
+            @(negedge clock);    // wait until next negative edge of clock
+            
+            for (index = 0; index <= 31; index = index + 1) begin
+                checkRegister(index, 32'h00000000);
+            end
+
+        end
+
+    endtask
+
+
 endmodule
