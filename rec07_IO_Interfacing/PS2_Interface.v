@@ -15,6 +15,14 @@ module PS2_Interface(inclock, resetn, ps2_clock, ps2_data, ps2_key_data, ps2_key
 			last_data_received <= 8'h00;
 		else if (ps2_key_pressed == 1'b1)
 			last_data_received <= ps2_key_data;
+      if (ps2_key_data == 8'h15)
+			  last_data_received <= 8'h51;
+      else if (ps2_key_data == 8'h2d)
+			  last_data_received <= 8'h52;
+      else if (ps2_key_data == 8'h1b)
+			  last_data_received <= 8'h53;
+      else if (ps2_key_data == 8'h2c)
+			  last_data_received <= 8'h54;
 	end
 	
 	PS2_Controller PS2 (.CLOCK_50 			(inclock),
