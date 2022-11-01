@@ -159,7 +159,9 @@ module processor(
     assign ctrl_writeReg = overflow_alu ? 5'b11110:(Rdst_ctrl ? Rd:Rt);
     assign ctrl_readRegA = Rs;
     assign ctrl_readRegB = Rt;
-    assign data_writeReg = overflow_alu ? rstatus_sig:alu_output;
+
+    // assign data_writeReg = overflow_alu ? rstatus_sig:alu_output;
+    assign data_writeReg = overflow_alu ? rstatus_sig:(Rwd_ctrl ? alu_output:q_dmem);
 
     assign ctrl_writeEnable = Rwe_ctrl;
 
@@ -184,6 +186,12 @@ module processor(
         .isLessThan(isLessThan_alu),
         .overflow(overflow_alu)
     );
+
+    /* ================== Data Memory ================== */
+
+    assign address_dmem = alu_output;
+    assign data = data_readRegB;
+    assign wren = DMwe_ctrl;
 
 
 endmodule
