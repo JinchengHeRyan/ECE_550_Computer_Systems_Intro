@@ -91,5 +91,51 @@ module processor(
     input [31:0] data_readRegA, data_readRegB;
 
     /* YOUR CODE STARTS HERE */
+    
+    /* ========== PC register ========== */
+    
+    wire [31:0] PC_input;
+    onereg PC_reg(PC_input, address_imem, clock, reset, 1'b1);
+
+    // PC = PC + 1 (not PC = PC + 4!)
+    
+    alu pc_alu(.data_operandA  (address_imem), 
+               .data_operandB  (32'h00000001), 
+               .ctrl_ALUopcode (5'b00001), 
+               .ctrl_shiftamt  (5'b00000),
+               .data_result    (PC_input)
+    );
+
+    /* ========== Instruction Decode ==========*/
+
+    wire [4:0] opcode, Rd, Rs, Rt, shamt, alu_op;
+    wire [16:0] imm;
+    instruction_decoder instDecoder(q_imem, opcode, Rd, Rs, Rt, shamt, alu_op, imm);
+
+    
+    /* ======== Control Signal settings ======== */
+
+
+
+
+
+    /* ======== Register File ======== */
+
+    // TODO: Dont forget to consider status register!
+
+    assign ctrl_writeReg = Rd;
+    assign ctrl_readRegA = Rs;
+    assign ctrl_readRegB = Rt;
+
+
+
+    /* ======== ALU ======== */
+    alu alu_circ(.data_operandA  (data_readRegA), 
+                 .data_operandB  (data_readRegB), 
+                 .ctrl_ALUopcode (alu_op), 
+                 .ctrl_shiftamt  (shamt), 
+                 .data_result    (data_writeReg)
+    );
+
 
 endmodule
