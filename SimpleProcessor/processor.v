@@ -102,7 +102,7 @@ module processor(
     alu pc_alu(
         .data_operandA(address_imem),
         .data_operandB(32'h00000001),
-        .ctrl_ALUopcode(5'b00001),
+        .ctrl_ALUopcode(5'b00000),
         .ctrl_shiftamt(5'b00000),
         .data_result(PC_input)
     );
@@ -111,7 +111,21 @@ module processor(
 
     wire[4:0] opcode, Rd, Rs, Rt, shamt, alu_op;
     wire[16:0] imm;
-    instruction_decoder instDecoder(q_imem, opcode, Rd, Rs, Rt, shamt, alu_op, imm);
+    wire rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
+
+    instruction_decoder instDecoder(
+        .instruction(q_imem),
+        .opcode(opcode),
+        .Rd(Rd),
+        .Rs(Rs),
+        .Rt(Rt),
+        .shamt(shamt),
+        .alu_op(alu_op),
+        .imm(imm),
+        .rstatus_isAdd(rstatus_isAdd),
+        .rstatus_isAddi(rstatus_isAddi),
+        .rstatus_isSub(rstatus_isSub),
+    );
 
 
     /* ======== Control Signal settings ======== */
@@ -122,21 +136,36 @@ module processor(
 
     /* ======== Register File ======== */
 
-    // TODO: Dont forget to consider status register!
+    wire[31:0] rstatus_sig;
 
-    assign ctrl_writeReg = Rd;
+    // Determine the rstatus value
+    assign rstatus_sig = overflow_alu ?
+        (rstatus_isAdd ?
+            32'h00000001:(rstatus_isAddi ?
+            32'h00000002:(rstatus_isSub ?
+            32'h00000003:32'hzzzzzzzz))):32'h00000000;
+
+    assign ctrl_writeReg = overflow_alu ? 5'h11110:Rd;
     assign ctrl_readRegA = Rs;
     assign ctrl_readRegB = Rt;
+    assign data_writeReg = overflow_alu ? rstatus_sig:alu_output;
 
 
 
-    /* ======== ALU ======== */
+    /* ================== ALU ================== */
+
+    wire isNotEqual_alu, isLessThan_alu, overflow_alu;
+    wire[31:0] alu_output;
+
     alu alu_circ(
         .data_operandA(data_readRegA),
         .data_operandB(data_readRegB),
         .ctrl_ALUopcode(alu_op),
         .ctrl_shiftamt(shamt),
-        .data_result(data_writeReg)
+        .data_result(alu_output),
+        .isNotEqual(isNotEqual_alu),
+        .isLessThan(isLessThan_alu),
+        .overflow(overflow_alu)
     );
 
 
