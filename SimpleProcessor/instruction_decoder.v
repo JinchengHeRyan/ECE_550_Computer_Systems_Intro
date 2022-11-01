@@ -5,7 +5,6 @@ module instruction_decoder(
     Rs,
     Rt,
     shamt,
-    alu_op,
     imm,
     rstatus_isAdd,
     rstatus_isAddi,
@@ -13,7 +12,7 @@ module instruction_decoder(
 );
     input[31:0] instruction;
 
-    output[4:0] opcode, Rd, Rs, Rt, shamt, alu_op;
+    output[4:0] opcode, Rd, Rs, Rt, shamt;
     output[16:0] imm;
 
     output rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
@@ -32,8 +31,6 @@ module instruction_decoder(
     wire[31:0] onehot_op, onehot_shamt;
     decode5to32 decode_opcode(opcode, onehot_op);
     decode5to32 decode_shamt(shamt, onehot_shamt);
-
-    assign alu_op[4:0] = onehot_op[0] ? instruction[6:2]:5'bzzzzz;  // R-type, opcode is always zero
 
     /* ========== rstatus signal ========== */
 
