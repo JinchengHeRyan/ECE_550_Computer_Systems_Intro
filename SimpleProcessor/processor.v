@@ -102,7 +102,7 @@ module processor(
     alu pc_alu(
         .data_operandA(address_imem),
         .data_operandB(32'h00000001),
-        .ctrl_ALUopcode(5'b00001),
+        .ctrl_ALUopcode(5'b00000),
         .ctrl_shiftamt(5'b00000),
         .data_result(PC_input)
     );
