@@ -34,9 +34,9 @@ module instruction_decoder(
 
     /* ========== rstatus signal ========== */
 
-    assign rstatus_isAdd = onehot_op[0] ? (onehot_shamt[0] ? 1:0):0;
-    assign rstatus_isAddi = onehot_op[5] ? 1:0;
-    assign rstatus_isSub = onehot_op[0] ? (onehot_shamt[1] ? 1:0):0;
+    assign rstatus_isAdd = onehot_op[0] ? (onehot_shamt[0] ? 1'b1:1'b0):1'b0;
+    assign rstatus_isAddi = onehot_op[5] ? 1'b1:1'b0;
+    assign rstatus_isSub = onehot_op[0] ? (onehot_shamt[1] ? 1'b1:1'b0):1'b0;
 
 
 endmodule
