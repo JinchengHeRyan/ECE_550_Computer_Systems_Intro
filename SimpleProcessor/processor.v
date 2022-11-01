@@ -109,7 +109,7 @@ module processor(
 
     /* ========== Instruction Decode ==========*/
 
-    wire[4:0] opcode, Rd, Rs, Rt, shamt, alu_op;
+    wire[4:0] opcode, Rd, Rs, Rt, shamt;
     wire[16:0] imm;
     wire rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
 
@@ -120,7 +120,6 @@ module processor(
         .Rs(Rs),
         .Rt(Rt),
         .shamt(shamt),
-        .alu_op(alu_op),
         .imm(imm),
         .rstatus_isAdd(rstatus_isAdd),
         .rstatus_isAddi(rstatus_isAddi),
@@ -130,7 +129,19 @@ module processor(
 
     /* ======== Control Signal settings ======== */
 
-
+    wire[4:0] ALUop_ctrl;
+    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rdst_ctrl, Rwd_ctrl;
+    control_signal ctrlSig(
+        opcode, shamt,
+        br_ctrl,
+        jp_ctrl,
+        ALUinB_ctrl,
+        ALUop_ctrl,
+        DMwe_ctrl,
+        Rwe_ctrl,
+        Rdst_ctrl,
+        Rwd_ctrl
+    );
 
 
 
@@ -145,10 +156,12 @@ module processor(
             32'h00000002:(rstatus_isSub ?
             32'h00000003:32'hzzzzzzzz))):32'h00000000;
 
-    assign ctrl_writeReg = overflow_alu ? 5'h11110:Rd;
+    assign ctrl_writeReg = overflow_alu ? 5'b11110:(Rdst_ctrl ? Rd:Rt);
     assign ctrl_readRegA = Rs;
     assign ctrl_readRegB = Rt;
     assign data_writeReg = overflow_alu ? rstatus_sig:alu_output;
+
+    assign ctrl_writeEnable = Rwe_ctrl;
 
 
 
@@ -157,10 +170,14 @@ module processor(
     wire isNotEqual_alu, isLessThan_alu, overflow_alu;
     wire[31:0] alu_output;
 
+    // Sign extension for immediate
+    wire[31:0] imm_sx;
+    signExtension immSX(imm, imm_sx);
+
     alu alu_circ(
         .data_operandA(data_readRegA),
-        .data_operandB(data_readRegB),
-        .ctrl_ALUopcode(alu_op),
+        .data_operandB(ALUinB_ctrl ? data_readRegB:imm_sx),
+        .ctrl_ALUopcode(ALUop_ctrl),
         .ctrl_shiftamt(shamt),
         .data_result(alu_output),
         .isNotEqual(isNotEqual_alu),
