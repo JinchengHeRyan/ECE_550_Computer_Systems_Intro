@@ -75,44 +75,45 @@ module processor(
     input clock, reset;
 
     // Imem
-    output [11:0] address_imem;
-    input [31:0] q_imem;
+    output[11:0] address_imem;
+    input[31:0] q_imem;
 
     // Dmem
-    output [11:0] address_dmem;
-    output [31:0] data;
+    output[11:0] address_dmem;
+    output[31:0] data;
     output wren;
-    input [31:0] q_dmem;
+    input[31:0] q_dmem;
 
     // Regfile
     output ctrl_writeEnable;
-    output [4:0] ctrl_writeReg, ctrl_readRegA, ctrl_readRegB;
-    output [31:0] data_writeReg;
-    input [31:0] data_readRegA, data_readRegB;
+    output[4:0] ctrl_writeReg, ctrl_readRegA, ctrl_readRegB;
+    output[31:0] data_writeReg;
+    input[31:0] data_readRegA, data_readRegB;
 
     /* YOUR CODE STARTS HERE */
-    
+
     /* ========== PC register ========== */
-    
-    wire [31:0] PC_input;
+
+    wire[31:0] PC_input;
     onereg PC_reg(PC_input, address_imem, clock, reset, 1'b1);
 
     // PC = PC + 1 (not PC = PC + 4!)
-    
-    alu pc_alu(.data_operandA  (address_imem), 
-               .data_operandB  (32'h00000001), 
-               .ctrl_ALUopcode (5'b00001), 
-               .ctrl_shiftamt  (5'b00000),
-               .data_result    (PC_input)
+
+    alu pc_alu(
+        .data_operandA(address_imem),
+        .data_operandB(32'h00000001),
+        .ctrl_ALUopcode(5'b00001),
+        .ctrl_shiftamt(5'b00000),
+        .data_result(PC_input)
     );
 
     /* ========== Instruction Decode ==========*/
 
-    wire [4:0] opcode, Rd, Rs, Rt, shamt, alu_op;
-    wire [16:0] imm;
+    wire[4:0] opcode, Rd, Rs, Rt, shamt, alu_op;
+    wire[16:0] imm;
     instruction_decoder instDecoder(q_imem, opcode, Rd, Rs, Rt, shamt, alu_op, imm);
 
-    
+
     /* ======== Control Signal settings ======== */
 
 
@@ -130,11 +131,12 @@ module processor(
 
 
     /* ======== ALU ======== */
-    alu alu_circ(.data_operandA  (data_readRegA), 
-                 .data_operandB  (data_readRegB), 
-                 .ctrl_ALUopcode (alu_op), 
-                 .ctrl_shiftamt  (shamt), 
-                 .data_result    (data_writeReg)
+    alu alu_circ(
+        .data_operandA(data_readRegA),
+        .data_operandB(data_readRegB),
+        .ctrl_ALUopcode(alu_op),
+        .ctrl_shiftamt(shamt),
+        .data_result(data_writeReg)
     );
 
 
