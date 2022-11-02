@@ -75,6 +75,8 @@ set_global_assignment -name EDA_TEST_BENCH_NAME SimpleProcessor_tb -section_id e
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id SimpleProcessor_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME SimpleProcessor_tb -section_id SimpleProcessor_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE SimpleProcessor_tb.v -section_id SimpleProcessor_tb
+set_global_assignment -name VERILOG_FILE clk_divide_2.v
+set_global_assignment -name VERILOG_FILE clk_divide_4.v
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top

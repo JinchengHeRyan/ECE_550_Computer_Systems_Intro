@@ -95,12 +95,15 @@ module processor(
     /* ========== PC register ========== */
 
     wire[31:0] PC_input;
-    onereg PC_reg(PC_input, address_imem, clock, reset, 1'b1);
+    wire[31:0] PC_output;
+    onereg PC_reg(PC_input, PC_output, clock, reset, 1'b1);
+
+    assign address_imem = PC_output[11:0];
 
     // PC = PC + 1 (not PC = PC + 4!)
 
     alu pc_alu(
-        .data_operandA(address_imem),
+        .data_operandA(PC_output),
         .data_operandB(32'h00000001),
         .ctrl_ALUopcode(5'b00000),
         .ctrl_shiftamt(5'b00000),
@@ -123,7 +126,7 @@ module processor(
         .imm(imm),
         .rstatus_isAdd(rstatus_isAdd),
         .rstatus_isAddi(rstatus_isAddi),
-        .rstatus_isSub(rstatus_isSub),
+        .rstatus_isSub(rstatus_isSub)
     );
 
 
@@ -144,10 +147,13 @@ module processor(
     );
 
 
-
     /* ======== Register File ======== */
 
     wire[31:0] rstatus_sig;
+
+    wire isNotEqual_alu, isLessThan_alu, overflow_alu;
+
+    wire[31:0] alu_output;
 
     // Determine the rstatus value
     assign rstatus_sig = overflow_alu ?
@@ -168,9 +174,6 @@ module processor(
 
 
     /* ================== ALU ================== */
-
-    wire isNotEqual_alu, isLessThan_alu, overflow_alu;
-    wire[31:0] alu_output;
 
     // Sign extension for immediate
     wire[31:0] imm_sx;

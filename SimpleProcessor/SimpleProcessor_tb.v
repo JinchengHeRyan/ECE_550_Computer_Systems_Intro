@@ -5,14 +5,14 @@ module SimpleProcessor_tb();
 
     // outputs
     wire imem_clock, dmem_clock, processor_clock, regfile_clock;
-    wire[31:0] data_readRegA, data_readRegB, q_dmem;
+    wire[31:0] data_readRegA, data_readRegB, q_dmem, q_imem;
 
     // Tracking the number of errors
     integer errors;
     integer index;    // for testing...
     reg[31:0] ans_list[0:12];
     // instantiate
-    skeleton_test my_skeleton(clock, ctrl_reset, imem_clock, dmem_clock, processor_clock, regfile_clock, data_readRegA, data_readRegB, q_dmem);
+    skeleton_test my_skeleton(clock, ctrl_reset, imem_clock, dmem_clock, processor_clock, regfile_clock, data_readRegA, data_readRegB, q_dmem, q_imem);
 
 
     // setting the initial values of all the reg
