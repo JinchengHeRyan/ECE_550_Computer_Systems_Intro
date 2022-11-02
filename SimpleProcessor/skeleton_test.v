@@ -9,7 +9,7 @@
  * inspect which signals the processor tries to assert when.
  */
 
-module skeleton_test(clock, reset, imem_clock, dmem_clock, processor_clock, regfile_clock, data_readRegA, data_readRegB, q_dmem);
+module skeleton_test(clock, reset, imem_clock, dmem_clock, processor_clock, regfile_clock, data_readRegA, data_readRegB, q_dmem, q_imem);
     input clock, reset;
     /* 
         Create four clocks for each module from the original input "clock".
@@ -18,18 +18,22 @@ module skeleton_test(clock, reset, imem_clock, dmem_clock, processor_clock, regf
         (these may be inverted, divided, or unchanged from the original clock input). Your grade will be 
         based on proper functioning with this clock.
     */
+
     output imem_clock, dmem_clock, processor_clock, regfile_clock;
 
-    assign imem_clock = ~clock;
-    assign dmem_clock = ~clock;
-    assign processor_clock = clock;
-    assign regfile_clock = clock;
+    wire imem_clock, dmem_clock, processor_clock, regfile_clock;
+
+    clk_divide_4 proc_div4(clock, reset, processor_clock);
+    clk_divide_2 dmem_div2(clock, reset, dmem_clock);
+
+    assign imem_clock = clock;
+    assign regfile_clock = processor_clock;
 
     /** IMEM **/
     // Figure out how to generate a Quartus syncram component and commit the generated verilog file.
     // Make sure you configure it correctly!
     wire [11:0] address_imem;
-    wire [31:0] q_imem;
+    output [31:0] q_imem;
     imem my_imem(
         .address    (address_imem),            // address of data
         .clock      (imem_clock),                  // you may need to invert the clock
