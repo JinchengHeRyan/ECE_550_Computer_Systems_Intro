@@ -10,6 +10,7 @@ module SimpleProcessor_tb();
     // Tracking the number of errors
     integer errors;
     integer index;    // for testing...
+	 integer clk_index;
     reg[31:0] ans_list[0:12];
     // instantiate
     skeleton_test my_skeleton(clock, ctrl_reset, imem_clock, dmem_clock, processor_clock, regfile_clock, data_readRegA, data_readRegB, q_dmem, q_imem);
@@ -39,12 +40,15 @@ module SimpleProcessor_tb();
             ctrl_reset = 1'b1;    // assert reset
             @(negedge clock);    // wait until next negative edge of clock
             ctrl_reset = 1'b0;    // de-assert reset
-
+				@(posedge clock);
+				@(posedge clock);
             // Begin testing... (loop over registers)
             for (index = 0; index < 13; index = index+1)
                 begin
-                    @(negedge clock);
-                    @(negedge clock);
+						  for(clk_index = 0; clk_index<16; clk_index = clk_index+1)
+							begin
+								@(posedge clock);
+							end
                     if (data_readRegA != 0 && data_readRegB != ans_list[index])
                         begin
                             $display("**Error on read index %d exp: %d output: %d**", index, ans_list[index], data_readRegB);
