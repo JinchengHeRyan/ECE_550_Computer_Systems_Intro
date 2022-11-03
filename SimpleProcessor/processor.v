@@ -162,12 +162,11 @@ module processor(
             32'h00000002:(rstatus_isSub ?
             32'h00000003:32'hzzzzzzzz))):32'h00000000;
 
-    assign ctrl_writeReg = overflow_alu ? 5'b11110:(Rdst_ctrl ? Rd:Rt);
+    assign ctrl_writeReg = overflow_alu ? 5'b11110:Rd;
     assign ctrl_readRegA = Rs;
     assign ctrl_readRegB = Rt;
 
-    // assign data_writeReg = overflow_alu ? rstatus_sig:alu_output;
-    assign data_writeReg = overflow_alu ? rstatus_sig:(Rwd_ctrl ? alu_output:q_dmem);
+    assign data_writeReg = overflow_alu ? rstatus_sig:(Rwd_ctrl ? q_dmem:alu_output);
 
     assign ctrl_writeEnable = Rwe_ctrl;
 
@@ -181,7 +180,7 @@ module processor(
 
     alu alu_circ(
         .data_operandA(data_readRegA),
-        .data_operandB(ALUinB_ctrl ? data_readRegB:imm_sx),
+        .data_operandB(ALUinB_ctrl ? imm_sx:data_readRegB),
         .ctrl_ALUopcode(ALUop_ctrl),
         .ctrl_shiftamt(shamt),
         .data_result(alu_output),
