@@ -8,6 +8,7 @@ module SimpleProcessor_tb();
     wire[31:0] data_readRegA, data_readRegB, q_dmem, q_imem;
     wire[4:0] ctrl_writeReg, ctrl_readRegA, ctrl_readRegB;
     wire[31:0] data_writeReg;
+	 wire ctrl_writeEnable;
 
     // Tracking the number of errors
     integer errors;
@@ -15,7 +16,7 @@ module SimpleProcessor_tb();
     integer clk_index;
     reg[31:0] ans_list[0:12];
     // instantiate
-    skeleton_test my_skeleton(clock, ctrl_reset, imem_clock, dmem_clock, processor_clock, regfile_clock, data_readRegA, data_readRegB, q_dmem, q_imem, ctrl_writeReg, ctrl_readRegA, ctrl_readRegB, data_writeReg);
+    skeleton_test my_skeleton(clock, ctrl_reset, imem_clock, dmem_clock, processor_clock, regfile_clock, data_readRegA, data_readRegB, q_dmem, q_imem, ctrl_writeReg, ctrl_readRegA, ctrl_readRegB, data_writeReg,ctrl_writeEnable);
 
 
     // setting the initial values of all the reg
