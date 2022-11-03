@@ -9,7 +9,7 @@
  * inspect which signals the processor tries to assert when.
  */
 
-module skeleton_test(clock, reset, imem_clock, dmem_clock, processor_clock, regfile_clock, data_readRegA, data_readRegB, q_dmem, q_imem, ctrl_writeReg, ctrl_readRegA, ctrl_readRegB, data_writeReg);
+module skeleton_test(clock, reset, imem_clock, dmem_clock, processor_clock, regfile_clock, data_readRegA, data_readRegB, q_dmem, q_imem, ctrl_writeReg, ctrl_readRegA, ctrl_readRegB, data_writeReg,ctrl_writeEnable);
     input clock, reset;
     /* 
         Create four clocks for each module from the original input "clock".
@@ -59,7 +59,7 @@ module skeleton_test(clock, reset, imem_clock, dmem_clock, processor_clock, regf
 
     /** REGFILE **/
     // Instantiate your regfile
-    wire ctrl_writeEnable;
+    output ctrl_writeEnable;
     output [4:0] ctrl_writeReg, ctrl_readRegA, ctrl_readRegB;
     output [31:0] data_writeReg;
     output [31:0] data_readRegA, data_readRegB;
