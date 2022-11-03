@@ -1,4 +1,7 @@
 # $20 is always used for test
+
+nop
+
 addi $1, $0, 5
 add $20, $0, $1 # test $1
 addi $2, $0, 3
