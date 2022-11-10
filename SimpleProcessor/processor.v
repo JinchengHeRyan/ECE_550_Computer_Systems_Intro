@@ -112,7 +112,7 @@ module processor(
 
     /* ========== Instruction Decode ==========*/
 
-    wire[4:0] opcode, Rd, Rs, Rt, shamt;
+    wire[4:0] opcode, Rd, Rs, Rt, shamt, ALUop;
     wire[16:0] imm;
     wire rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
 
@@ -122,6 +122,7 @@ module processor(
         .Rd(Rd),
         .Rs(Rs),
         .Rt(Rt),
+        .ALUop(ALUop),
         .shamt(shamt),
         .imm(imm),
         .rstatus_isAdd(rstatus_isAdd),
@@ -133,16 +134,16 @@ module processor(
     /* ======== Control Signal settings ======== */
 
     wire[4:0] ALUop_ctrl;
-    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rdst_ctrl, Rwd_ctrl;
+    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl;
     control_signal ctrlSig(
-        opcode, shamt,
+        opcode, shamt, ALUop,
         br_ctrl,
         jp_ctrl,
         ALUinB_ctrl,
         ALUop_ctrl,
         DMwe_ctrl,
         Rwe_ctrl,
-        Rdst_ctrl,
+        Rtar_ctrl,
         Rwd_ctrl
     );
 
@@ -164,7 +165,7 @@ module processor(
 
     assign ctrl_writeReg = overflow_alu ? 5'b11110:Rd;
     assign ctrl_readRegA = Rs;
-    assign ctrl_readRegB = Rt;
+    assign ctrl_readRegB = Rtar_ctrl ? Rd:Rt;
 
     assign data_writeReg = overflow_alu ? rstatus_sig:(Rwd_ctrl ? q_dmem:alu_output);
 

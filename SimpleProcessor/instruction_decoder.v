@@ -4,6 +4,7 @@ module instruction_decoder(
     Rd,
     Rs,
     Rt,
+    ALUop,
     shamt,
     imm,
     rstatus_isAdd,
@@ -12,7 +13,7 @@ module instruction_decoder(
 );
     input[31:0] instruction;
 
-    output[4:0] opcode, Rd, Rs, Rt, shamt;
+    output[4:0] opcode, Rd, Rs, Rt, ALUop, shamt;
     output[16:0] imm;
 
     output rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
@@ -21,6 +22,8 @@ module instruction_decoder(
     assign Rd[4:0] = instruction[26:22];
     assign Rs[4:0] = instruction[21:17];
     assign Rt[4:0] = instruction[16:12];
+
+    assign ALUop[4:0] = instruction[6:2];
 
     assign shamt[4:0] = instruction[11:7];
 
