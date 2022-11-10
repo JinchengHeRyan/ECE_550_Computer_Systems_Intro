@@ -134,7 +134,7 @@ module processor(
     /* ======== Control Signal settings ======== */
 
     wire[4:0] ALUop_ctrl;
-    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rdst_ctrl, Rwd_ctrl;
+    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl;
     control_signal ctrlSig(
         opcode, shamt, ALUop,
         br_ctrl,
@@ -143,7 +143,7 @@ module processor(
         ALUop_ctrl,
         DMwe_ctrl,
         Rwe_ctrl,
-        Rdst_ctrl,
+        Rtar_ctrl,
         Rwd_ctrl
     );
 
@@ -165,7 +165,7 @@ module processor(
 
     assign ctrl_writeReg = overflow_alu ? 5'b11110:Rd;
     assign ctrl_readRegA = Rs;
-    assign ctrl_readRegB = Rt;
+    assign ctrl_readRegB = Rtar_ctrl ? Rd:Rt;
 
     assign data_writeReg = overflow_alu ? rstatus_sig:(Rwd_ctrl ? q_dmem:alu_output);
 

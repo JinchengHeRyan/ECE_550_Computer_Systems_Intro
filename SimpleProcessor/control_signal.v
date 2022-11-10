@@ -6,14 +6,14 @@ module control_signal(
     ALUop_ctrl,
     DMwe_ctrl,
     Rwe_ctrl,
-    Rdst_ctrl,
+    Rtar_ctrl,
     Rwd_ctrl
 );
 
     input[4:0] opcode, shamt, ALUop;
     output[4:0] ALUop_ctrl;
 
-    output br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rdst_ctrl, Rwd_ctrl;
+    output br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl;
 
     // checkpoint 4 needed instructions
     wire is_Rtype, is_addi, is_sw, is_lw;
@@ -32,7 +32,7 @@ module control_signal(
     assign ALUop_ctrl = is_Rtype ? ALUop:5'b00000;
     assign DMwe_ctrl = is_sw ? 1'b1:1'b0;
     assign Rwe_ctrl = (is_Rtype | is_addi | is_lw) ? 1'b1:1'b0;
-    assign Rdst_ctrl = is_Rtype ? 1'b1:1'b0;
+    assign Rtar_ctrl = is_Rtype ? 1'b0:(is_sw ? 1'b1:1'b0);
     assign Rwd_ctrl = is_lw ? 1'b1:1'b0;
 
 
