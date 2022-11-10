@@ -42,22 +42,19 @@ module SimpleProcessor_tb();
 
             ctrl_reset = 1'b1;    // assert reset
             @(negedge clock);    // wait until next negative edge of clock
-            @(negedge clock);    // wait until next negative edge of clock
-            @(negedge clock);    // wait until next negative edge of clock
-            @(negedge clock);    // wait until next negative edge of clock
             ctrl_reset = 1'b0;    // de-assert reset
             @(posedge clock);
-            @(posedge clock);
+          
             // Begin testing... (loop over registers)
             for (index = 0; index < 13; index = index+1)
                 begin
-                    for (clk_index = 0; clk_index < 16; clk_index = clk_index+1)
+                    for (clk_index = 0; clk_index < 8; clk_index = clk_index+1)
                         begin
                             @(posedge clock);
                         end
                     if (data_readRegA != 0 || data_readRegB != ans_list[index])
                         begin
-                            $display("**Error on read index %d exp: %d output: %d**", index, ans_list[index], data_readRegB);
+                            $display("** Error on read index %d exp: %d output: %d **", index, ans_list[index], data_readRegB);
                             errors = errors+1;
                         end
                 end
