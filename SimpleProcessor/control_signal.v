@@ -1,5 +1,5 @@
 module control_signal(
-    opcode, shamt,
+    opcode, shamt, ALUop,
     br_ctrl,
     jp_ctrl,
     ALUinB_ctrl,
@@ -10,7 +10,7 @@ module control_signal(
     Rwd_ctrl
 );
 
-    input[4:0] opcode, shamt;
+    input[4:0] opcode, shamt, ALUop;
     output[4:0] ALUop_ctrl;
 
     output br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rdst_ctrl, Rwd_ctrl;
@@ -29,7 +29,7 @@ module control_signal(
     assign is_lw = onehot_op[8] ? 1'b1:1'b0;
 
     assign ALUinB_ctrl = (is_addi | is_lw | is_sw) ? 1'b1:1'b0;
-    assign ALUop_ctrl = is_Rtype ? shamt:5'b00000;
+    assign ALUop_ctrl = is_Rtype ? ALUop:5'b00000;
     assign DMwe_ctrl = is_sw ? 1'b1:1'b0;
     assign Rwe_ctrl = (is_Rtype | is_addi | is_lw) ? 1'b1:1'b0;
     assign Rdst_ctrl = is_Rtype ? 1'b1:1'b0;
