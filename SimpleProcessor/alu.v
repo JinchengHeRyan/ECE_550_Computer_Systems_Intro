@@ -40,5 +40,4 @@ module alu(data_operandA, data_operandB, ctrl_ALUopcode,
                 5: inner_result = inner_A >>> ctrl_shiftamt;    // SRA
             endcase
         end
-
 endmodule
