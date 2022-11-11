@@ -26,24 +26,36 @@ module SimpleProcessor_tb();
             clock = 1'b0;    // at time 0
             errors = 0;
 
-            ans_list[0] = 5;
-            ans_list[1] = 3;
-            ans_list[2] = 8;
-            ans_list[3] = 2;
-            ans_list[4] = 0;
-            ans_list[5] = 1;
-            ans_list[6] = 3;
-            ans_list[7] = 20;
-            ans_list[8] = 4;
-            ans_list[9] = 345;
-            ans_list[10] = 567;
-            ans_list[11] = 345;
-            ans_list[12] = 567;
+            ans_list[0] = 65535;
+            ans_list[1] = 2147450880;
+            ans_list[2] = 2147483647;
+            ans_list[3] = 1;
+            ans_list[4] = 65536;
+            ans_list[5] = -2147483648;
+            ans_list[6] = 65534;
+            ans_list[7] = 32768;
+            ans_list[8] = 2147483647;
+            ans_list[9] = 2;
+            ans_list[10] = 3;
+            ans_list[11] = 1;
+            ans_list[12] = 1;
+				ans_list[13] = 3;
+				ans_list[14] = 2;
+				ans_list[15] = 1;
+				ans_list[16] = 456;
+				ans_list[17] = 1;
+				ans_list[18] = 2;
+				ans_list[19] = 65535;
 
             ctrl_reset = 1'b1;    // assert reset
             @(negedge clock);    // wait until next negative edge of clock
             ctrl_reset = 1'b0;    // de-assert reset
             @(posedge clock);
+				
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock);
           
             // Begin testing... (loop over registers)
             for (index = 0; index < 20; index = index+1)
