@@ -31,15 +31,15 @@ module instruction_decoder(
 
     /* ========== ALU optype configure ========== */
 
-    wire[31:0] onehot_op, onehot_shamt;
+    wire[31:0] onehot_op, onehot_aluop;
     decode5to32 decode_opcode(opcode, onehot_op);
-    decode5to32 decode_shamt(shamt, onehot_shamt);
+    decode5to32 decode_aluop(ALUop, onehot_aluop);
 
     /* ========== rstatus signal ========== */
 
-    assign rstatus_isAdd = onehot_op[0] ? (onehot_shamt[0] ? 1'b1:1'b0):1'b0;
+    assign rstatus_isAdd = onehot_op[0] ? (onehot_aluop[0] ? 1'b1:1'b0):1'b0;
     assign rstatus_isAddi = onehot_op[5] ? 1'b1:1'b0;
-    assign rstatus_isSub = onehot_op[0] ? (onehot_shamt[1] ? 1'b1:1'b0):1'b0;
+    assign rstatus_isSub = onehot_op[0] ? (onehot_aluop[1] ? 1'b1:1'b0):1'b0;
 
 
 endmodule
