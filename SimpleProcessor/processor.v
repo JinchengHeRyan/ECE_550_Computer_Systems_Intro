@@ -92,11 +92,26 @@ module processor(
 
     /* YOUR CODE STARTS HERE */
 
-    /* ========== PC register ========== */
-
+    /* ========== wire declaration ========== */
     wire[31:0] PC_input;
     wire[31:0] PC_output;
     wire[31:0] pc_alu_output;
+
+    wire[4:0] opcode, Rd, Rs, Rt, shamt, ALUop;
+    wire[16:0] imm;
+    wire[26:0] target;
+    wire rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
+
+    wire[4:0] ALUop_ctrl;
+    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl, JP_ctrl;
+
+    wire[31:0] rstatus_sig;
+    wire isNotEqual_alu, isLessThan_alu, overflow_alu;
+    wire[31:0] alu_output;
+
+    wire[31:0] imm_sx;
+
+    /* ========== PC register ========== */
 
     assign PC_input = JP_ctrl ? {{5{1'b0}}, target[26:0]}:pc_alu_output;
 
@@ -115,12 +130,6 @@ module processor(
     );
 
     /* ========== Instruction Decode ==========*/
-
-    wire[4:0] opcode, Rd, Rs, Rt, shamt, ALUop;
-    wire[16:0] imm;
-    wire[26:0] target;
-    wire rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
-
     instruction_decoder instDecoder(
         .instruction(q_imem),
         .opcode(opcode),
@@ -136,11 +145,8 @@ module processor(
         .rstatus_isSub(rstatus_isSub)
     );
 
-
     /* ======== Control Signal settings ======== */
 
-    wire[4:0] ALUop_ctrl;
-    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl, JP_ctrl;
     control_signal ctrlSig(
         opcode, shamt, ALUop,
         br_ctrl,
@@ -154,14 +160,7 @@ module processor(
         JP_ctrl
     );
 
-
     /* ======== Register File ======== */
-
-    wire[31:0] rstatus_sig;
-
-    wire isNotEqual_alu, isLessThan_alu, overflow_alu;
-
-    wire[31:0] alu_output;
 
     // Determine the rstatus value
     assign rstatus_sig = overflow_alu ?
@@ -178,12 +177,9 @@ module processor(
 
     assign ctrl_writeEnable = Rwe_ctrl;
 
-
-
     /* ================== ALU ================== */
 
     // Sign extension for immediate
-    wire[31:0] imm_sx;
     signExtension immSX(imm, imm_sx);
 
     alu alu_circ(
