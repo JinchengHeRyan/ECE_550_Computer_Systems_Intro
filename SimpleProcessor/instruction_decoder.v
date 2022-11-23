@@ -7,6 +7,7 @@ module instruction_decoder(
     ALUop,
     shamt,
     imm,
+    target,
     rstatus_isAdd,
     rstatus_isAddi,
     rstatus_isSub,
@@ -15,6 +16,7 @@ module instruction_decoder(
 
     output[4:0] opcode, Rd, Rs, Rt, ALUop, shamt;
     output[16:0] imm;
+    output[26:0] target;
 
     output rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
 
@@ -28,6 +30,8 @@ module instruction_decoder(
     assign shamt[4:0] = instruction[11:7];
 
     assign imm[16:0] = instruction[16:0];
+
+    assign target[26:0] = instruction[26:0];
 
     /* ========== ALU optype configure ========== */
 

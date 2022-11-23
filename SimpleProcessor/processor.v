@@ -96,6 +96,10 @@ module processor(
 
     wire[31:0] PC_input;
     wire[31:0] PC_output;
+    wire[31:0] pc_alu_output;
+
+    assign PC_input = JP_ctrl ? {{5{1'b0}}, target[26:0]}:pc_alu_output;
+
     onereg PC_reg(PC_input, PC_output, clock, reset, 1'b1);
 
     assign address_imem = PC_output[11:0];
@@ -107,13 +111,14 @@ module processor(
         .data_operandB(32'h00000001),
         .ctrl_ALUopcode(5'b00000),
         .ctrl_shiftamt(5'b00000),
-        .data_result(PC_input)
+        .data_result(pc_alu_output)
     );
 
     /* ========== Instruction Decode ==========*/
 
     wire[4:0] opcode, Rd, Rs, Rt, shamt, ALUop;
     wire[16:0] imm;
+    wire[26:0] target;
     wire rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
 
     instruction_decoder instDecoder(
@@ -125,6 +130,7 @@ module processor(
         .ALUop(ALUop),
         .shamt(shamt),
         .imm(imm),
+        .target(target),
         .rstatus_isAdd(rstatus_isAdd),
         .rstatus_isAddi(rstatus_isAddi),
         .rstatus_isSub(rstatus_isSub)
@@ -134,7 +140,7 @@ module processor(
     /* ======== Control Signal settings ======== */
 
     wire[4:0] ALUop_ctrl;
-    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl;
+    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl, JP_ctrl;
     control_signal ctrlSig(
         opcode, shamt, ALUop,
         br_ctrl,
@@ -144,7 +150,8 @@ module processor(
         DMwe_ctrl,
         Rwe_ctrl,
         Rtar_ctrl,
-        Rwd_ctrl
+        Rwd_ctrl,
+        JP_ctrl
     );
 
 
