@@ -105,7 +105,7 @@ module processor(
     wire rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
 
     wire[4:0] ALUop_ctrl;
-    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl, JP_ctrl, BNE_ctrl, BLT_ctrl;
+    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl, JP_ctrl, BNE_ctrl, BLT_ctrl, Jal_ctrl;
 
     wire[31:0] rstatus_sig;
     wire isNotEqual_alu, isLessThan_alu, overflow_alu;
@@ -171,7 +171,8 @@ module processor(
         Rwd_ctrl,
         JP_ctrl,
 		BNE_ctrl,
-		BLT_ctrl
+		BLT_ctrl,
+		Jal_ctrl
     );
 
     /* ======== Register File ======== */
@@ -183,11 +184,11 @@ module processor(
             32'h00000002:(rstatus_isSub ?
             32'h00000003:32'hzzzzzzzz))):32'h00000000;
 
-    assign ctrl_writeReg = overflow_alu ? 5'b11110:Rd;
+    assign ctrl_writeReg = Jal_ctrl ? 5'b11111 : (overflow_alu ? 5'b11110:Rd);
     assign ctrl_readRegA = Rs;
     assign ctrl_readRegB = Rtar_ctrl ? Rd:Rt;
 
-    assign data_writeReg = overflow_alu ? rstatus_sig:(Rwd_ctrl ? q_dmem:alu_output);
+    assign data_writeReg = Jal_ctrl ? pc_alu_output : (overflow_alu ? rstatus_sig:(Rwd_ctrl ? q_dmem:alu_output));
 
     assign ctrl_writeEnable = Rwe_ctrl;
 
