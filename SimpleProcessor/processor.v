@@ -96,6 +96,8 @@ module processor(
     wire[31:0] PC_input;
     wire[31:0] PC_output;
     wire[31:0] pc_alu_output;
+	 wire[31:0] pc_alu_branch_output;
+	 wire[31:0] pc_alu_final;
 
     wire[4:0] opcode, Rd, Rs, Rt, shamt, ALUop;
     wire[16:0] imm;
@@ -103,7 +105,7 @@ module processor(
     wire rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
 
     wire[4:0] ALUop_ctrl;
-    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl, JP_ctrl;
+    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl, JP_ctrl, BNE_ctrl, BLT_ctrl;
 
     wire[31:0] rstatus_sig;
     wire isNotEqual_alu, isLessThan_alu, overflow_alu;
@@ -113,7 +115,9 @@ module processor(
 
     /* ========== PC register ========== */
 
-    assign PC_input = JP_ctrl ? {{5{1'b0}}, target[26:0]}:pc_alu_output;
+    //assign PC_input = JP_ctrl ? {{5{1'b0}}, target[26:0]}:pc_alu_output;
+	 assign pc_alu_final = ((BNE_ctrl & isNotEqual_alu) | (BLT_ctrl & isNotEqual_alu & ~isLessThan_alu)) ? pc_alu_branch_output : pc_alu_output;
+	 assign PC_input = JP_ctrl ? {{5{1'b0}}, target[26:0]}:pc_alu_final;
 
     onereg PC_reg(PC_input, PC_output, clock, reset, 1'b1);
 
@@ -127,6 +131,14 @@ module processor(
         .ctrl_ALUopcode(5'b00000),
         .ctrl_shiftamt(5'b00000),
         .data_result(pc_alu_output)
+    );
+	 
+	 alu pc_alu_branch(
+        .data_operandA(pc_alu_output),
+        .data_operandB(imm_sx),
+        .ctrl_ALUopcode(5'b00000),
+        .ctrl_shiftamt(5'b00000),
+        .data_result(pc_alu_branch_output)
     );
 
     /* ========== Instruction Decode ==========*/
@@ -157,7 +169,9 @@ module processor(
         Rwe_ctrl,
         Rtar_ctrl,
         Rwd_ctrl,
-        JP_ctrl
+        JP_ctrl,
+		BNE_ctrl,
+		BLT_ctrl
     );
 
     /* ======== Register File ======== */
