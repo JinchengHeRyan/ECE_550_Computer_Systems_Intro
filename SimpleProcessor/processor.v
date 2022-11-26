@@ -105,7 +105,7 @@ module processor(
     wire rstatus_isAdd, rstatus_isAddi, rstatus_isSub;
 
     wire[4:0] ALUop_ctrl;
-    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl, JP_ctrl, BNE_ctrl, BLT_ctrl, Jal_ctrl;
+    wire br_ctrl, jp_ctrl, ALUinB_ctrl, DMwe_ctrl, Rwe_ctrl, Rtar_ctrl, Rwd_ctrl, JP_ctrl, BNE_ctrl, BLT_ctrl, Jal_ctrl, Jr_ctrl;
 
     wire[31:0] rstatus_sig;
     wire isNotEqual_alu, isLessThan_alu, overflow_alu;
@@ -117,7 +117,7 @@ module processor(
 
     //assign PC_input = JP_ctrl ? {{5{1'b0}}, target[26:0]}:pc_alu_output;
 	 assign pc_alu_final = ((BNE_ctrl & isNotEqual_alu) | (BLT_ctrl & isNotEqual_alu & ~isLessThan_alu)) ? pc_alu_branch_output : pc_alu_output;
-	 assign PC_input = JP_ctrl ? {{5{1'b0}}, target[26:0]}:pc_alu_final;
+	 assign PC_input = Jr_ctrl ? data_readRegB : (JP_ctrl ? {{5{1'b0}}, target[26:0]}:pc_alu_final);
 
     onereg PC_reg(PC_input, PC_output, clock, reset, 1'b1);
 
@@ -172,7 +172,8 @@ module processor(
         JP_ctrl,
 		BNE_ctrl,
 		BLT_ctrl,
-		Jal_ctrl
+		Jal_ctrl,
+		Jr_ctrl
     );
 
     /* ======== Register File ======== */
