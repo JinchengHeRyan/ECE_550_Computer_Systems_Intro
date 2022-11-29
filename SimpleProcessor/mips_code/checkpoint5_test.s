@@ -41,6 +41,16 @@ j _for_loop_2
 
 _out_for_loop_2:
 
+bex rstatus_not_0
+addi $20, $0, 10        # should be executed
+
+setx 10
+bex rstatus_not_0
+addi $20, $0, 20        # should not be executed
+
+rstatus_not_0:
+addi $20, $0, 30        # should be executed
+
 halt
 
 _func_1:
