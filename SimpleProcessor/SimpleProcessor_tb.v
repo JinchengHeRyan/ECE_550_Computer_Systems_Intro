@@ -54,7 +54,7 @@ module SimpleProcessor_tb();
             @(posedge clock);
 
             // Begin testing... (loop over registers)
-            for (index = 0; index < 30; index = index+1)
+            for (index = 0; index < 60; index = index+1)
                 begin
                     for (clk_index = 0; clk_index < 8; clk_index = clk_index+1)
                         begin
