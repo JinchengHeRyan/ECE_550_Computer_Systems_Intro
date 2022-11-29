@@ -8,7 +8,7 @@ module SimpleProcessor_tb();
     wire[31:0] data_readRegA, data_readRegB, q_dmem, q_imem;
     wire[4:0] ctrl_writeReg, ctrl_readRegA, ctrl_readRegB;
     wire[31:0] data_writeReg;
-	 wire ctrl_writeEnable;
+    wire ctrl_writeEnable;
 
     // Tracking the number of errors
     integer errors;
@@ -16,7 +16,7 @@ module SimpleProcessor_tb();
     integer clk_index;
     reg[31:0] ans_list[0:14];
     // instantiate
-    skeleton_test my_skeleton(clock, ctrl_reset, imem_clock, dmem_clock, processor_clock, regfile_clock, data_readRegA, data_readRegB, q_dmem, q_imem, ctrl_writeReg, ctrl_readRegA, ctrl_readRegB, data_writeReg,ctrl_writeEnable);
+    skeleton_test my_skeleton(clock, ctrl_reset, imem_clock, dmem_clock, processor_clock, regfile_clock, data_readRegA, data_readRegB, q_dmem, q_imem, ctrl_writeReg, ctrl_readRegA, ctrl_readRegB, data_writeReg, ctrl_writeEnable);
 
 
     // setting the initial values of all the reg
@@ -39,22 +39,22 @@ module SimpleProcessor_tb();
             ans_list[10] = 0;
             ans_list[11] = 0;
             ans_list[12] = -2147483648;
-				ans_list[13] = -1;
-				ans_list[14] = 0;
-				
+            ans_list[13] = -1;
+            ans_list[14] = 0;
+
 
             ctrl_reset = 1'b1;    // assert reset
             @(negedge clock);    // wait until next negative edge of clock
             ctrl_reset = 1'b0;    // de-assert reset
             @(posedge clock);
-				
-				@(posedge clock);
-				@(posedge clock);
-				@(posedge clock);
-				@(posedge clock);
-          
+
+            @(posedge clock);
+            @(posedge clock);
+            @(posedge clock);
+            @(posedge clock);
+
             // Begin testing... (loop over registers)
-            for (index = 0; index < 15; index = index+1)
+            for (index = 0; index < 30; index = index+1)
                 begin
                     for (clk_index = 0; clk_index < 8; clk_index = clk_index+1)
                         begin
