@@ -96,8 +96,8 @@ module processor(
     wire[31:0] PC_input;
     wire[31:0] PC_output;
     wire[31:0] pc_alu_output;
-	 wire[31:0] pc_alu_branch_output;
-	 wire[31:0] pc_alu_final;
+    wire[31:0] pc_alu_branch_output;
+    wire[31:0] pc_alu_final;
 
     wire[4:0] opcode, Rd, Rs, Rt, shamt, ALUop;
     wire[16:0] imm;
@@ -116,8 +116,8 @@ module processor(
     /* ========== PC register ========== */
 
     //assign PC_input = JP_ctrl ? {{5{1'b0}}, target[26:0]}:pc_alu_output;
-	 assign pc_alu_final = ((BNE_ctrl & isNotEqual_alu) | (BLT_ctrl & isNotEqual_alu & ~isLessThan_alu)) ? pc_alu_branch_output : pc_alu_output;
-	 assign PC_input = Jr_ctrl ? data_readRegB : ((JP_ctrl | (Bex_ctrl & isNotEqual_alu)) ? {{5{1'b0}}, target[26:0]}:pc_alu_final);
+    assign pc_alu_final = ((BNE_ctrl & isNotEqual_alu) | (BLT_ctrl & isNotEqual_alu & ~isLessThan_alu)) ? pc_alu_branch_output:pc_alu_output;
+    assign PC_input = Jr_ctrl ? data_readRegB:((JP_ctrl | (Bex_ctrl & isNotEqual_alu)) ? {{5{1'b0}}, target[26:0]}:pc_alu_final);
 
     onereg PC_reg(PC_input, PC_output, clock, reset, 1'b1);
 
@@ -132,8 +132,8 @@ module processor(
         .ctrl_shiftamt(5'b00000),
         .data_result(pc_alu_output)
     );
-	 
-	 alu pc_alu_branch(
+
+    alu pc_alu_branch(
         .data_operandA(pc_alu_output),
         .data_operandB(imm_sx),
         .ctrl_ALUopcode(5'b00000),
@@ -170,12 +170,12 @@ module processor(
         Rtar_ctrl,
         Rwd_ctrl,
         JP_ctrl,
-		BNE_ctrl,
-		BLT_ctrl,
-		Jal_ctrl,
-		Jr_ctrl,
-		Bex_ctrl,
-		Setx_crtl
+        BNE_ctrl,
+        BLT_ctrl,
+        Jal_ctrl,
+        Jr_ctrl,
+        Bex_ctrl,
+        Setx_crtl
     );
 
     /* ======== Register File ======== */
@@ -187,11 +187,11 @@ module processor(
             32'h00000002:(rstatus_isSub ?
             32'h00000003:32'hzzzzzzzz))):32'h00000000;
 
-    assign ctrl_writeReg = Setx_crtl ? 5'b11110 : (Jal_ctrl ? 5'b11111 : (overflow_alu ? 5'b11110:Rd));
-    assign ctrl_readRegA = Bex_ctrl ? 5'b11110 : Rs;
-    assign ctrl_readRegB = Bex_ctrl ? 5'b00000 : (Rtar_ctrl ? Rd:Rt);
+    assign ctrl_writeReg = Setx_crtl ? 5'b11110:(Jal_ctrl ? 5'b11111:(overflow_alu ? 5'b11110:Rd));
+    assign ctrl_readRegA = Bex_ctrl ? 5'b11110:Rs;
+    assign ctrl_readRegB = Bex_ctrl ? 5'b00000:(Rtar_ctrl ? Rd:Rt);
 
-    assign data_writeReg = Setx_crtl ? {{5{1'b0}}, target[26:0]} : (Jal_ctrl ? pc_alu_output : (overflow_alu ? rstatus_sig:(Rwd_ctrl ? q_dmem:alu_output)));
+    assign data_writeReg = Setx_crtl ? {{5{1'b0}}, target[26:0]}:(Jal_ctrl ? pc_alu_output:(overflow_alu ? rstatus_sig:(Rwd_ctrl ? q_dmem:alu_output)));
 
     assign ctrl_writeEnable = Rwe_ctrl;
 
